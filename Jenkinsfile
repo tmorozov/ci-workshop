@@ -32,5 +32,17 @@ pipeline {
 
       }
     }
+    stage('tests') {
+      steps {
+        dir(path: 'flask-app') {
+          sh '''docker-compose down
+docker-compose build flask-app
+docker-compose run flask-app pytest -v
+docker-compose down
+'''
+        }
+
+      }
+    }
   }
 }
