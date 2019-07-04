@@ -24,5 +24,13 @@ pipeline {
 
       }
     }
+    stage('stop app') {
+      steps {
+        dir(path: 'flask-app') {
+          sh 'docker-compose down'
+        }
+
+      }
+    }
   }
 }
