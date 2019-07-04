@@ -37,11 +37,21 @@ pipeline {
         dir(path: 'flask-app') {
           sh '''docker-compose down
 docker-compose build flask-app
-docker-compose run flask-app pytest -v
+docker-compose run flask-app pytest -v --junit-xml=/var/opt/junit-report/report.xml
 docker-compose down
 '''
         }
 
+      }
+    }
+    stage('Archive test results') {
+      steps {
+        junit 'flask-app/junit-report/report.xml'
+      }
+    }
+    stage('cleanup') {
+      steps {
+        sh 'sudo rm -rf flask-app/junit-report'
       }
     }
   }
